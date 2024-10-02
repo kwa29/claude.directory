@@ -2,15 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
 
-## [0.1.1] - 2023-07-18
-
 ### Changed
-- Changed button color from blue to red in the Button component.
+- Button color changed from blue to red for improved visual contrast.
 
-## [0.1.0] - 2023-07-17
+## [1.0.0] - 2023-06-01
 
 ### Added
 - Initial release of the project.
-- Basic Button component with blue color.
+- Basic functionality implemented.
+
+[Unreleased]: https://github.com/yourusername/yourrepository/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/yourusername/yourrepository/releases/tag/v1.0.0

@@ -1,8 +1,5 @@
-import { useTag } from '../components/TagContext';
-import { useSearch } from '../components/SearchContext';
-import { useSort } from '../components/SortContext';
 import { useState, useEffect } from 'react';
-import EditPromptModal from '../components/EditPromptModal';
+import Link from 'next/link';
 
 interface Prompt {
   id: number;
@@ -15,16 +12,11 @@ interface Prompt {
 }
 
 export default function Home() {
-  const { selectedTag, setSelectedTag } = useTag();
-  const { searchQuery } = useSearch();
-  const { sortBy, setSortBy } = useSort();
   const [prompts, setPrompts] = useState<Prompt[]>([]);
-  const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
-  const [allTags, setAllTags] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchPrompts();
-    fetchTags();
   }, []);
 
   const fetchPrompts = () => {
@@ -33,166 +25,72 @@ export default function Home() {
       .then(data => setPrompts(data));
   };
 
-  const fetchTags = () => {
-    fetch('/api/tags')
-      .then(res => res.json())
-      .then(data => setAllTags(data));
-  };
-
-  const handleEdit = (prompt: Prompt) => {
-    setEditingPrompt(prompt);
-  };
-
-  const handleSaveEdit = (updatedPrompt: Prompt) => {
-    fetch('/api/prompts', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedPrompt),
-    })
-      .then(response => {
-        if (response.ok) {
-          fetchPrompts();
-          setEditingPrompt(null);
-        } else {
-          throw new Error('Failed to update prompt');
-        }
-      })
-      .catch(error => {
-        console.error('Error updating prompt:', error);
-        alert('Failed to update prompt. Please try again.');
-      });
-  };
-
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this prompt?')) {
-      fetch(`/api/prompts?id=${id}`, { method: 'DELETE' })
-        .then(response => {
-          if (response.ok) {
-            fetchPrompts();
-          } else {
-            throw new Error('Failed to delete prompt');
-          }
-        })
-        .catch(error => {
-          console.error('Error deleting prompt:', error);
-          alert('Failed to delete prompt. Please try again.');
-        });
-    }
-  };
-
-  const filteredAndSortedPrompts = prompts
-    .filter(prompt => {
-      const matchesTag = selectedTag ? prompt.tags.includes(selectedTag) : true;
-      const matchesSearch = searchQuery
-        ? prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          prompt.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          prompt.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          prompt.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-        : true;
-      return matchesTag && matchesSearch;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'date':
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        case 'popularity':
-          return b.popularity - a.popularity;
-        case 'title':
-          return a.title.localeCompare(b.title);
-        default:
-          return 0;
-      }
-    });
+  const filteredPrompts = prompts.filter(prompt =>
+    prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    prompt.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    prompt.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   return (
-    <div>
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">All Tags</h2>
-        <div className="flex flex-wrap gap-2">
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-              className={`px-3 py-1 rounded-full text-sm ${
-                selectedTag === tag
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">
-          {selectedTag ? `Prompts tagged with "${selectedTag}"` : "All Prompts"}
-        </h1>
-        <div className="flex items-center">
-          <label htmlFor="sort" className="mr-2 text-gray-700">Sort by:</label>
-          <select
-            id="sort"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'date' | 'popularity' | 'title')}
-            className="border border-gray-300 rounded-md px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="date">Date</option>
-            <option value="popularity">Popularity</option>
-            <option value="title">Title</option>
-          </select>
-        </div>
-      </div>
-      {filteredAndSortedPrompts.length === 0 ? (
-        <p className="text-gray-600">No prompts found matching your criteria.</p>
-      ) : (
-        <div className="space-y-6">
-          {filteredAndSortedPrompts.map((prompt) => (
-            <div key={prompt.id} className="bg-white border border-gray-200 p-6 rounded-lg hover:shadow-md transition-shadow">
-              <h2 className="text-xl font-semibold mb-2 text-gray-800">{prompt.title}</h2>
-              <p className="text-gray-600 mb-4">{prompt.description}</p>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
-                  {prompt.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-gray-500 text-sm">{prompt.author}</p>
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-1">
+        <section className="hero-section w-full py-12 md:py-24 lg:py-32 xl:py-48">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                  Discover <span className="gradient-text">AI Prompts</span>
+                </h1>
+                <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl">
+                  Explore a vast collection of AI prompts to enhance your creativity and productivity.
+                </p>
               </div>
-              <div className="mt-2 text-sm text-gray-500">
-                <span>Date: {new Date(prompt.date).toLocaleDateString()}</span>
-                <span className="ml-4">Popularity: {prompt.popularity}</span>
-              </div>
-              <div className="mt-4 flex justify-end space-x-2">
-                <button
-                  onClick={() => handleEdit(prompt)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded text-sm transition-colors"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(prompt.id)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded text-sm transition-colors"
-                >
-                  Delete
-                </button>
+              <div className="w-full max-w-sm space-y-2">
+                <form className="flex space-x-2">
+                  <input
+                    className="input flex-1 glass-effect text-white placeholder-gray-300"
+                    placeholder="Search prompts..."
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <button className="button button-primary" type="submit">
+                    Search
+                  </button>
+                </form>
               </div>
             </div>
-          ))}
-        </div>
-      )}
-      {editingPrompt && (
-        <EditPromptModal
-          prompt={editingPrompt}
-          onClose={() => setEditingPrompt(null)}
-          onSave={handleSaveEdit}
-        />
-      )}
+          </div>
+        </section>
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-8">Featured Prompts</h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredPrompts.map((prompt) => (
+                <div key={prompt.id} className="card">
+                  <div className="p-6 space-y-2">
+                    <h3 className="text-2xl font-bold">{prompt.title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{prompt.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {prompt.tags.map((tag, index) => (
+                        <span key={index} className="tag tag-primary">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="p-6 pt-0 flex justify-between items-center">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">By {prompt.author}</p>
+                    <button className="button button-secondary">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

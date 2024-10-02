@@ -1,18 +1,28 @@
-import React from 'react';
+import { ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary";
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
+export function Button({
+  children,
+  className,
+  variant = "primary",
+  ...props
+}: ButtonProps) {
   return (
     <button
-      onClick={onClick}
-      className={`px-4 py-2 rounded-md font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${className}`}
+      className={cn(
+        "px-4 py-2 rounded-md font-medium transition-colors",
+        variant === "primary"
+          ? "bg-blue-600 text-white hover:bg-blue-700"
+          : "bg-gray-200 text-gray-800 hover:bg-gray-300",
+        className
+      )}
+      {...props}
     >
       {children}
     </button>
   );
-};
+}

@@ -38,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
                 onClick={() => setSelectedTag(tag)}
                 className={`block text-left w-full px-2 py-1 rounded ${
                   selectedTag === tag
-                    ? "bg-blue-100 text-blue-800"
+                    ? "bg-red-100 text-red-800"
                     : "text-gray-600 hover:text-gray-800"
                 } transition-colors`}
               >
@@ -48,7 +48,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
           <Link 
             href="/submit" 
-            className="mt-8 bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-colors text-center"
+            className="mt-8 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors text-center"
           >
             Submit
           </Link>
@@ -60,7 +60,7 @@ export default function Layout({ children }: LayoutProps) {
               placeholder="Search prompts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-800 bg-white"
             />
           </div>
           {children}

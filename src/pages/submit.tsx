@@ -12,7 +12,7 @@ export default function SubmitPrompt() {
 
   useEffect(() => {
     // Load tags from the JSON file
-    setAvailableTags(tagsData.map(tag => tag.name))
+    setAvailableTags(tagsData.tags)
   }, [])
 
   const handleTagSelect = (tag: string) => {
@@ -35,36 +35,64 @@ export default function SubmitPrompt() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Assuming you have other form fields
     const formData = {
-      // ... other form fields ...
+      title: '', // Add these fields
+      description: '',
+      author: '',
       tags: selectedTags
     }
-    // Submit the form data
     console.log('Form data:', formData)
     // Add your form submission logic here
   }
 
   return (
-    <div>
-      <h1>Submit a Prompt</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Other form fields */}
-        
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold mb-6">Submit a Prompt</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="tags">Tags</label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+          <Input
+            type="text"
+            id="title"
+            name="title"
+            className="w-full"
+            // Add onChange handler and value prop
+          />
+        </div>
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+            rows={4}
+            // Add onChange handler and value prop
+          ></textarea>
+        </div>
+        <div>
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">Author</label>
+          <Input
+            type="text"
+            id="author"
+            name="author"
+            className="w-full"
+            // Add onChange handler and value prop
+          />
+        </div>
+        <div>
+          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
           <Dropdown
             options={availableTags}
             onSelect={handleTagSelect}
             placeholder="Select tags"
           />
-          <div>
+          <div className="mt-2 flex flex-wrap">
             {selectedTags.map(tag => (
-              <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              <span key={tag} className="inline-flex items-center bg-red-100 text-red-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
                 {tag}
                 <button 
                   onClick={() => handleRemoveTag(tag)}
-                  className="ml-1 text-red-500 hover:text-red-700"
+                  className="ml-1 text-red-600 hover:text-red-800"
                 >
                   x
                 </button>
@@ -76,21 +104,20 @@ export default function SubmitPrompt() {
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             placeholder="Add a new tag"
-            className="mt-2"
+            className="mt-2 w-full"
           />
           <button 
             onClick={handleAddNewTag}
             type="button"
-            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="mt-2 bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded transition-colors"
           >
             Add Tag
           </button>
         </div>
 
-        {/* Submit button */}
         <button 
           type="submit"
-          className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded transition-colors"
         >
           Submit Prompt
         </button>

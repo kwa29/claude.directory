@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated button component design
+  - Added hover and focus effects
+  - Improved accessibility
+  - Enhanced responsiveness
+  - Introduced custom styles using Stylus
+
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- New `button.module.styl` file for custom button styles
+- Unit tests for the Button component
 
-## [Previous Versions]
+## [0.1.0] - 2023-06-01
 
-... (keep the existing content for previous versions)
+### Added
+- Initial release of the project
+- Basic component structure
+- Fundamental styling using Tailwind CSS

@@ -7,10 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated button components with improved design and functionality
+  - Added ripple effect on hover
+  - Enhanced button variants and sizes
+  - Improved accessibility and keyboard navigation
+
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- New Stylus module for custom button styles
 
-## [Previous Versions]
+## [0.1.0] - 2023-06-01
 
-... (keep the existing content for previous versions)
+### Added
+- Initial release of the project
+- Basic component structure
+- Core functionality implemented

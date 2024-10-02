@@ -1,0 +1,50 @@
+.button
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  border-radius: 0.375rem
+  font-weight: 500
+  transition: all 0.2s ease-in-out
+  cursor: pointer
+
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5)
+
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+
+.primary
+  background-color: #3182ce
+  color: white
+
+  &:hover:not(:disabled)
+    background-color: #2c5282
+
+.secondary
+  background-color: #718096
+  color: white
+
+  &:hover:not(:disabled)
+    background-color: #4a5568
+
+.outline
+  background-color: transparent
+  border: 1px solid #3182ce
+  color: #3182ce
+
+  &:hover:not(:disabled)
+    background-color: #ebf8ff
+
+.small
+  font-size: 0.875rem
+  padding: 0.25rem 0.5rem
+
+.medium
+  font-size: 1rem
+  padding: 0.5rem 1rem
+
+.large
+  font-size: 1.125rem
+  padding: 0.75rem 1.5rem

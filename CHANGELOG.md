@@ -8,9 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- New Button component with improved design and functionality
+  - Supports primary, secondary, and outline variants
+  - Supports small, medium, and large sizes
+  - Includes disabled state
+  - Improved accessibility with proper ARIA attributes
+  - Responsive design using Tailwind CSS utility classes
+  - Custom styling with Stylus CSS modules
+  - Memoized for better performance
+  - Comprehensive unit tests
 
-## [Previous Versions]
+### Changed
+- Updated existing button usage throughout the application to use the new Button component
 
-... (keep the existing content for previous versions)
+### Removed
+- Old button component (if applicable)

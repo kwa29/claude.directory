@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated button component design for improved user interface
+  - Added custom styles with box-shadow and hover effects
+  - Implemented new variants and sizes for better flexibility
+  - Enhanced accessibility with focus-visible styles
+
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- New unit tests for the Button component to ensure proper rendering and functionality
 
-## [Previous Versions]
+## [1.0.0] - 2023-06-01
 
-... (keep the existing content for previous versions)
+### Added
+- Initial release of the project
+- Basic component structure and styling
+
+[Unreleased]: https://github.com/yourusername/yourrepository/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/yourusername/yourrepository/releases/tag/v1.0.0

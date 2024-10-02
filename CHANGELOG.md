@@ -2,15 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
 
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- Improved global design of the site
+- New layout component for consistent page structure
+- Header component with navigation and theme toggle
+- Footer component with copyright and social links
+- Updated home page with hero section and features
+- Features component to showcase key product features
+- Feature card component for individual feature display
+- Responsive design using Tailwind CSS
+- Dark mode support
+- Animations using Framer Motion
 
-## [Previous Versions]
+### Changed
+- Updated global styles and Tailwind configuration for new design
+- Modified app/page.tsx to use new components and layout
 
-... (keep the existing content for previous versions)
+### Improved
+- Overall user interface and user experience
+- Accessibility with proper ARIA attributes and keyboard navigation
+- Performance optimizations with React Server Components

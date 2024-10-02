@@ -7,14 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- Button color changed from blue to red for improved visual contrast.
-
-## [1.0.0] - 2023-06-01
-
 ### Added
-- Initial release of the project.
-- Basic functionality implemented.
+- Dropdown for selecting tags in the Submit a Prompt page
+- Ability to add custom tags when submitting a prompt
 
-[Unreleased]: https://github.com/yourusername/yourrepository/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/yourusername/yourrepository/releases/tag/v1.0.0
+## [Previous Versions]
+
+... (keep the existing content for previous versions)

@@ -8,9 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Dropdown for selecting tags in the Submit a Prompt page
-- Ability to add custom tags when submitting a prompt
+- New button component design with various variants and sizes
+- Custom hover and pulsate effects for buttons
+- Button showcase page to demonstrate new button styles
 
-## [Previous Versions]
-
-... (keep the existing content for previous versions)
+[Existing content...]

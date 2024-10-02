@@ -1,47 +1,24 @@
-# Project Name
+# Claude Directory
 
-Brief description of the project.
+## Overview
+Claude Directory is a [brief description of the project].
 
-## Table of Contents
+## Functionalities
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
+### [Functionality 1]
+[Description of functionality 1]
 
-## Installation
+### [Functionality 2]
+[Description of functionality 2]
 
-Instructions on how to install and set up the project.
+### [Functionality 3]
+[Description of functionality 3]
 
-```bash
-# Example installation commands
-git clone https://github.com/username/project.git
-cd project
-npm install
-```
-
-## Usage
-
-Instructions on how to use the project, with examples.
-
-```bash
-# Example usage commands
-npm start
-```
-
-## Features
-
-List of key features of the project.
-
-- Feature 1
-- Feature 2
-- Feature 3
+## Getting Started
+[Instructions on how to set up and run the project]
 
 ## Contributing
-
-Guidelines for contributing to the project.
+[Guidelines for contributing to the project]
 
 ## License
-
-Information about the project's license.
+[License information]

@@ -1,57 +1,150 @@
-import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// Removed import for promptData utils as the module is not found
+// import { savePrompt, updatePrompt, deletePrompt } from '@/utils/promptData';
 
-interface PromptCardProps {
+interface Prompt {
+  id?: string;
   title: string;
   description: string;
   tags: string[];
-  downloads: number;
 }
 
-const PromptCard: React.FC<PromptCardProps> = ({ title, description, tags, downloads }) => {
+interface PromptCardProps {
+  prompt?: Prompt;
+  onSave?: (editedPrompt: Prompt) => void;
+  onCancel?: () => void;
+}
+
+const defaultPrompt: Prompt = {
+  title: '',
+  description: '',
+  tags: [],
+};
+
+const PromptCard: React.FC<PromptCardProps> = ({ 
+  prompt = defaultPrompt, 
+  onSave = () => {}, 
+  onCancel = () => {} 
+}) => {
+  const [editedPrompt, setEditedPrompt] = useState<Prompt>(prompt);
+  const [newTag, setNewTag] = useState<string>('');
+  const [availableTags, setAvailableTags] = useState<string[]>(['AI', 'Coding', 'Design', 'Writing']);
+
+  useEffect(() => {
+    setEditedPrompt(prompt);
+  }, [prompt]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditedPrompt(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleTagChange = (tag: string) => {
+    if (!editedPrompt.tags.includes(tag)) {
+      setEditedPrompt(prev => ({ ...prev, tags: [...prev.tags, tag] }));
+    }
+  };
+
+  const handleAddNewTag = () => {
+    if (newTag && !availableTags.includes(newTag) && !editedPrompt.tags.includes(newTag)) {
+      setAvailableTags(prev => [...prev, newTag]);
+      setEditedPrompt(prev => ({ ...prev, tags: [...prev.tags, newTag] }));
+      setNewTag('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setEditedPrompt(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+
+  const handleSave = () => {
+    if (editedPrompt.id) {
+      const updatedPrompt = updatePrompt(editedPrompt);
+      onSave(updatedPrompt);
+    } else {
+      const newPrompt = savePrompt(editedPrompt);
+      onSave(newPrompt);
+    }
+  };
+
+  const handleDelete = () => {
+    if (editedPrompt.id) {
+      deletePrompt(editedPrompt.id);
+      onCancel();
+    }
+  };
+
+  // Filter out the tags that are already selected
+  const remainingTags = availableTags.filter(tag => !editedPrompt.tags.includes(tag));
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <motion.div 
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center justify-center transition-all hover:shadow-xl cursor-pointer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <img src="/placeholder.svg" alt={title} className="w-20 h-20 mb-4 rounded-full bg-gray-200" />
-          <h3 className="text-lg font-semibold mb-2 text-center">{title}</h3>
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {tags.slice(0, 3).map((tag, index) => (
-              <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+    <Card className="w-full max-w-md mx-auto">
+      <CardContent className="space-y-4 p-4">
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            name="title"
+            value={editedPrompt.title}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="description">Description</Label>
+          <Input
+            id="description"
+            name="description"
+            value={editedPrompt.description}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Tags</Label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {editedPrompt.tags.map((tag) => (
+              <span key={tag} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center">
                 {tag}
+                <button onClick={() => handleRemoveTag(tag)} className="ml-1 text-blue-600 hover:text-blue-800">×</button>
               </span>
             ))}
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Downloads: {downloads}</p>
-        </motion.div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex items-center justify-center">
-            <img src="/placeholder.svg" alt={title} className="w-32 h-32 rounded-full bg-gray-200" />
-          </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
-              <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                {tag}
-              </span>
-            ))}
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Downloads: {downloads}
+          {remainingTags.length > 0 && (
+            <Select onValueChange={handleTagChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a tag" />
+              </SelectTrigger>
+              <SelectContent>
+                {remainingTags.map(tag => (
+                  <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+          <div className="flex mt-2">
+            <Input
+              placeholder="Add new tag"
+              value={newTag}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTag(e.target.value)}
+              className="mr-2"
+            />
+            <Button onClick={handleAddNewTag}>Add</Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+        <div className="flex justify-end space-x-2">
+          <Button variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+          {editedPrompt.id && <Button variant="destructive" onClick={handleDelete}>Delete</Button>}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

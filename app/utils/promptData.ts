@@ -4,10 +4,11 @@ import path from 'path';
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'prompts.json');
 
 interface Prompt {
-  id: string;
+  id: number;
   title: string;
   description: string;
   tags: string[];
+  downloads: number;
 }
 
 export async function getPrompts(): Promise<Prompt[]> {

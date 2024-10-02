@@ -7,26 +7,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { savePrompt, updatePrompt, deletePrompt } from '../utils/promptData';
 
 interface Prompt {
-  id?: string;
+  id: number; // Changed from string to number
   title: string;
   description: string;
   tags: string[];
+  downloads: number; // Added downloads
 }
 
 interface PromptCardProps {
-  prompt?: Prompt;
+  prompt: Prompt;
   onSave?: (editedPrompt: Prompt) => void;
   onCancel?: () => void;
 }
 
-const defaultPrompt: Prompt = {
-  title: '',
-  description: '',
-  tags: [],
-};
-
 const PromptCard: React.FC<PromptCardProps> = ({ 
-  prompt = defaultPrompt, 
+  prompt, 
   onSave = () => {}, 
   onCancel = () => {} 
 }) => {
@@ -66,7 +61,7 @@ const PromptCard: React.FC<PromptCardProps> = ({
 
   const handleSave = async () => {
     if (editedPrompt.id) {
-      const updatedPrompt = await updatePrompt({ ...editedPrompt, id: editedPrompt.id });
+      const updatedPrompt = await updatePrompt(editedPrompt);
       onSave(updatedPrompt);
     } else {
       const newPrompt = await savePrompt(editedPrompt);
@@ -76,7 +71,7 @@ const PromptCard: React.FC<PromptCardProps> = ({
 
   const handleDelete = async () => {
     if (editedPrompt.id) {
-      await deletePrompt(editedPrompt.id);
+      await deletePrompt(editedPrompt.id.toString());
       onCancel();
     }
   };
@@ -142,6 +137,9 @@ const PromptCard: React.FC<PromptCardProps> = ({
           <Button onClick={handleSave}>Save</Button>
           {editedPrompt.id && <Button variant="destructive" onClick={handleDelete}>Delete</Button>}
         </div>
+        {prompt.downloads !== undefined && (
+          <div>Downloads: {prompt.downloads}</div>
+        )}
       </CardContent>
     </Card>
   );

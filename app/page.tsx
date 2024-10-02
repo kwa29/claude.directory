@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 
+// Use the same Prompt interface as in PromptCard.tsx
 interface Prompt {
   id: number;
   title: string;
@@ -126,7 +127,21 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <PromptCard {...prompt} />
+            <PromptCard 
+              prompt={prompt} 
+              onSave={(editedPrompt) => {
+                // Handle saving the edited prompt
+                console.log('Saving edited prompt:', editedPrompt);
+                // You might want to update the prompts state here
+                setPrompts(prevPrompts => 
+                  prevPrompts.map(p => p.id === editedPrompt.id ? editedPrompt : p)
+                );
+              }}
+              onCancel={() => {
+                // Handle cancelling the edit
+                console.log('Cancelled editing prompt');
+              }}
+            />
           </motion.div>
         ))}
       </motion.div>

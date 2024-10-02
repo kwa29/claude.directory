@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Creative Writing Assistant",
+    "description": "A prompt to help with creative writing tasks",
+    "tags": ["writing", "creativity", "storytelling"],
+    "downloads": 1000
+  },
+  {
+    "id": 2,
+    "title": "Code Explainer",
+    "description": "Explain complex code snippets in simple terms",
+    "tags": ["programming", "education", "coding"],
+    "downloads": 850
+  }
+]

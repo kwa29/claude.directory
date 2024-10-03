@@ -126,7 +126,12 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <PromptCard {...prompt} />
+            <PromptCard 
+              prompt={{
+                ...prompt,
+                id: prompt.id.toString()
+              }}
+            />
           </motion.div>
         ))}
       </motion.div>
